@@ -9,7 +9,7 @@ const usr = userStore()
 
 function login(){
   usr.login();
-  router.push({ path: 'rockets' })
+  router.push({ path: '/' })
 }
 </script>
 

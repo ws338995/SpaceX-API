@@ -1,0 +1,60 @@
+<script setup>
+import { ref, onMounted, defineEmits } from 'vue'
+
+const emit = defineEmits(['click'])
+
+const props = defineProps({
+  icon: String,
+  text: String,
+  color: String,
+  outlined: Boolean,
+})
+
+const color = ref('#1b1b1b');
+
+let backgroundColor = color.value;
+
+onMounted(()=>{
+  if(props.color){color.value=props.color}
+  if(props.outlined){
+    backgroundColor = 'rgba(0,0,0,0)';
+  }else{
+    backgroundColor = color.value;
+  }
+})
+
+</script>
+
+<template>
+  <div class="chip" @click="emit('click')" :style="{ 'background-color' : backgroundColor, 'border-color' : color }">
+    <div class="icon" v-if="props.icon">
+      <span class="material-symbols-outlined" :style="[props.outlined ? {'color': color} : {'color': '#fff'}]">
+        {{ props.icon }}
+      </span>
+    </div>
+    <div :style="[props.outlined ? {'color': color} : {'color': '#fff'}]">
+      {{ props.text }}
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.chip{
+  padding:3px 10px;
+  color:white;
+  width:fit-content;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0);
+  transition:0.2s;
+  display:grid;
+  grid-template-columns: auto auto;
+}
+.icon{
+  padding-top:3px;
+  padding-right:4px;
+  transition: 0.2s;
+}
+.icon span{
+  font-size:17px;
+}
+</style>

@@ -1,5 +1,16 @@
 <script setup>
 import { ref, onMounted } from 'vue'
+import RocketList from './RocketList.vue';
+
+let selectedMenu = ref('')
+
+function selectMenu(menu){
+  if(selectedMenu.value == menu){
+    selectedMenu.value = "";
+  }else{
+    selectedMenu.value = menu;
+  }
+}
 
 // lifecycle hooks
 onMounted(() => {
@@ -7,10 +18,13 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="bar">
-    <div class="btn">LAUNCHES</div>
-    <div class="btn">ROCKETS</div>
-    <div class="btn">CREWS</div>
+  <div>
+    <div class="bar">
+      <div class="btn" @click="selectMenu('launches')" :class="{selected : selectedMenu == 'launches'}" >LAUNCHES</div>
+      <div class="btn" @click="selectMenu('rockets')" :class="{selected : selectedMenu == 'rockets'}">ROCKETS</div>
+      <div class="btn" @click="selectMenu('crews')" :class="{selected : selectedMenu == 'crews'}">CREWS</div>
+    </div>
+    <RocketList v-if="selectedMenu == 'rockets'" @close="selectMenu('rockets')"/>
   </div>
 </template>
 
@@ -33,6 +47,10 @@ onMounted(() => {
 .btn{
     padding:5px;
     transition:0.2s;
+}
+
+.btn.selected{
+  color:orange; 
 }
 .btn:hover{
     color:white;

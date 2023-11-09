@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
-import Rockets from '../views/Rockets.vue'
+import Rocket from '../views/Rocket.vue'
 import Login from '../views/Login.vue'
 
 import { userStore } from '../stores/user'
@@ -25,9 +25,9 @@ const router = createRouter({
       component: Login
     },
     {
-      path: '/rockets',
-      name: 'rockets',
-      component: Rockets,
+      path: '/rocket/:id',
+      name: 'rocket',
+      component: Rocket,
       beforeEnter:(to, from, next)=>{
         const usr = userStore();
 
