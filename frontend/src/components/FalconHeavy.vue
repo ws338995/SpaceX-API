@@ -204,7 +204,8 @@ function selectProp(){
     height: 500px;
     border-left:5px solid rgb(170, 120, 12);
     /* border-bottom:5px solid blue; */
-    background-color:rgba(12,12,12,0.8);
+    background-color:rgba(12,12,12,0.9);
+    box-shadow:0 0 20px black;
     top:20vh;
     left:0;right:0;
     padding:10px;
