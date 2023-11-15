@@ -1,6 +1,8 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import RocketList from './RocketList.vue';
+import CrewList from './CrewList.vue';
+import LaunchList from './LaunchList.vue';
 
 let selectedMenu = ref('')
 
@@ -25,6 +27,8 @@ onMounted(() => {
       <div class="btn" @click="selectMenu('crews')" :class="{selected : selectedMenu == 'crews'}">CREWS</div>
     </div>
     <RocketList v-if="selectedMenu == 'rockets'" @close="selectMenu('rockets')"/>
+    <CrewList v-if="selectedMenu == 'crews'" @close="selectMenu('crews')"/>
+    <LaunchList v-if="selectedMenu == 'launches'" @close="selectMenu('launches')"/>
   </div>
 </template>
 

@@ -8,13 +8,19 @@ const props = defineProps({
   text: String,
   color: String,
   outlined: Boolean,
+  selectable: Boolean
 })
 
 const color = ref('#1b1b1b');
 
 let backgroundColor = color.value;
 
+let cursor = ref('auto');
+
 onMounted(()=>{
+  if(props.selectable){
+    cursor.value = 'pointer'
+  }
   if(props.color){color.value=props.color}
   if(props.outlined){
     backgroundColor = 'rgba(0,0,0,0)';
@@ -26,7 +32,7 @@ onMounted(()=>{
 </script>
 
 <template>
-  <div class="chip" @click="emit('click')" :style="{ 'background-color' : backgroundColor, 'border-color' : color }">
+  <div class="chip" @click="emit('click')" :style="{ 'background-color' : backgroundColor, 'border-color' : color,  'cursor': cursor}">
     <div class="icon" v-if="props.icon">
       <span class="material-symbols-outlined" :style="[props.outlined ? {'color': color} : {'color': '#fff'}]">
         {{ props.icon }}
@@ -48,6 +54,13 @@ onMounted(()=>{
   transition:0.2s;
   display:grid;
   grid-template-columns: auto auto;
+}
+.chip:hover{
+  background-color: orange !important;
+  border-color:white!important;
+}
+.chip:hover div{
+  color:white !important;
 }
 .icon{
   padding-top:3px;

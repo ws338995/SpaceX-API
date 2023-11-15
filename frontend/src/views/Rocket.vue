@@ -19,6 +19,8 @@ function loadData(id){
     rocket.value = response.data;
     loaded.value = true;
   })
+
+  console.log(rocket.value);
 }
 
 onMounted(() => {
@@ -32,7 +34,7 @@ watch(route, () =>{loadData(route.params.id)})
   <main>
     <div v-if="loaded">
       <RocketInfo :rocket="rocket"/>
-      <FalconHeavy />
+      <FalconHeavy :rocket="rocket" />
     </div>
   </main>
 </template>

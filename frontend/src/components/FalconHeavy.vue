@@ -1,7 +1,14 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 
-const rocket = ref(null);
+import { userStore } from '../stores/user';
+import Chip from './Chip.vue';
+
+const usr = userStore();
+
+const props = defineProps({
+  rocket: Object,
+})
 
 let activePayload = ref(false);
 let activeStage1 = ref(false);
@@ -136,22 +143,108 @@ function selectProp(){
             </g>
           </svg>
         </div>
+
+
         <div class="infoBox" v-if="activePayload">
-            <h2>Payload</h2>
-            <p>Tes tes tset</p>
+          <div class="content">
+            <h1 style="display:inline-block">Payload</h1>
+            <div style="display:inline-block; float:right;">
+              <Chip v-if="props.rocket.second_stage.reusable" text="Reusable" color="green" outlined/>
+              <Chip v-else text="Non-Reusable" color="red" outlined/>
+            </div>
+            <hr/>
+            <div class="content-text">
+              <h3>Composite Fairing</h3>
+              <p>Height: <b>{{ props.rocket.second_stage.payloads.composite_fairing.height[usr.getUnitsSize]  }} {{ usr.getUnitsSize }}</b></p>
+              <p>Diameter: <b>{{ props.rocket.second_stage.payloads.composite_fairing.diameter[usr.getUnitsSize] }} {{ usr.getUnitsSize }}</b></p>
+            </div>
+            <div class="content-text">
+              <h3>Payload Weights Capacity</h3>
+              <Chip v-for="pw in props.rocket.payload_weights" :key="pw.id"
+              :text="pw.name + ': ' + pw[usr.getUnitsWeight] + ' ' + usr.getUnitsWeight" 
+              outlined 
+              color="white"
+              />
+            </div>
+          </div>
         </div>
+
+
         <div class="infoBox" v-if="activeStage1">
-            <h2>Stage 1</h2>
-            <p>Tes tes tset</p>
+          <div class="content">
+            <h1 style="display:inline-block">First Stage</h1>
+            <div style="display:inline-block; float:right;">
+              <Chip v-if="props.rocket.first_stage.reusable" text="Reusable" color="green" outlined/>
+              <Chip v-else text="Non-Reusable" color="red" outlined/>
+            </div>
+            <hr/>
+            <div class="content-text">
+              <h3>Trust</h3>
+              <p>Thrust at Sea Level: <b>{{ props.rocket.first_stage.thrust_sea_level[usr.getUnitsForce] }} {{ usr.getUnitsForce }}</b></p>
+              <p>Thrust in Vacuum: <b>{{ props.rocket.first_stage.thrust_sea_level[usr.getUnitsForce] }} {{ usr.getUnitsForce }}</b></p>
+            </div>
+            <hr/>
+            <div class="content-text">
+              <h3>Information</h3>
+              <p>Number of engines used: <b>{{ props.rocket.first_stage.engines }}</b></p>
+              <p>Amount of Fuel: <b>{{ props.rocket.first_stage.fuel_amount_tons }} tons</b></p>
+              <p>Burn Time: <b>{{ props.rocket.first_stage.burn_time_sec }} seconds</b></p>
+            </div>
+          </div>
         </div>
+
+
         <div class="infoBox" v-if="activeStage2">
-            <h2>Stage 2</h2>
-            <p>Tes tes tset</p>
+          <div class="content">
+            <h1 style="display:inline-block">Second Stage</h1>
+            <div style="display:inline-block; float:right;">
+              <Chip v-if="props.rocket.second_stage.reusable" text="Reusable" color="green" outlined/>
+              <Chip v-else text="Non-Reusable" color="red" outlined/>
+            </div>
+            <hr/>
+            <div class="content-text">
+              <h3>Information</h3>
+              <p>Thrust: <b>{{ props.rocket.second_stage.thrust[usr.getUnitsForce] }} {{ usr.getUnitsForce }}</b></p>
+              <p>Number of engines used: <b>{{ props.rocket.second_stage.engines }}</b></p>
+              <p>Amount of Fuel: <b>{{ props.rocket.second_stage.fuel_amount_tons }} tons</b></p>
+              <p>Burn Time: <b>{{ props.rocket.second_stage.burn_time_sec }} seconds</b></p>
+            </div>
+          </div>
         </div>
+
+
         <div class="infoBox" v-if="activePropulsion">
-            <h2>Propulsion</h2>
-            <p>Tes tes tset</p>
-        </div>
+          <div class="content">
+              <h2>Propulsion (Engines)</h2>
+              <hr/>
+              <div class="content-text">
+                <h3>Information</h3>
+                <p>Total Number of Engines: <b>{{ props.rocket.engines.number }}</b></p>
+                <p>Type: <b>{{ props.rocket.engines.type }}</b></p>
+                <p>Layout: <b>{{ props.rocket.engines.layout }}</b></p>
+                <p>Max Engine Loos: <b>{{ props.rocket.engines.engine_loss_max }} engines</b></p>
+                <p>Thrust to Weight: <b>{{ props.rocket.engines.thrust_to_weight }}</b></p>
+              </div>
+              <hr/>
+              <div class="content-text">
+                <h3>Fuel Types</h3>
+                <Chip v-if="props.rocket.engines.propellant_1" :text="props.rocket.engines.propellant_1" color="gray" style="display:inline-block; margin-right:3px;"/>
+                <Chip v-if="props.rocket.engines.propellant_2" :text="props.rocket.engines.propellant_2" color="gray" style="display:inline-block"/>
+              </div>
+              <div class="content-text">
+                <h3>Thrust</h3>
+                <p>Thrust at Sea Level: <b>{{ props.rocket.engines.thrust_sea_level[usr.getUnitsForce] }} {{ usr.getUnitsForce }}</b></p>
+                <p>Thrust in a Vacuum: <b>{{ props.rocket.engines.thrust_vacuum[usr.getUnitsForce] }} {{ usr.getUnitsForce }}</b></p>
+                <p>Burn Time: <b>{{ props.rocket.engines.burn_time_sec }} seconds</b></p>
+              </div>
+              <hr/>
+              <div class="content-text">
+                <h3>ISP (Specific Impulse)</h3>
+                <p>Sea Level: <b>{{ props.rocket.engines.isp.sea_level }} seconds</b></p>
+                <p>Vacuum: <b>{{ props.rocket.engines.isp.vacuum }} seconds</b></p>
+              </div>
+            </div>
+          </div>
     </div>
 </template>
 
@@ -168,6 +261,9 @@ function selectProp(){
 }
 .cls-1 {
   stroke-width: 2px;
+}
+h3{
+  color:#464646;
 }
 .propSelected{
     width: 250px !important;
@@ -196,14 +292,15 @@ function selectProp(){
     height: 90vh;
     transition:0.5s ease;
 }
+b{
+  font-weight: 600;
+}
 .infoBox{
     overflow: hidden;
     position: absolute;
-    width:90vw;
-    max-width:600px;
-    height: 500px;
+    max-width:350px;
+    /* max-height:fit-content; */
     border-left:5px solid rgb(170, 120, 12);
-    /* border-bottom:5px solid blue; */
     background-color:rgba(12,12,12,0.9);
     box-shadow:0 0 20px black;
     top:20vh;
@@ -212,9 +309,18 @@ function selectProp(){
     margin:auto;
     animation: text-box-open 2s ease;
 }
+.infoBox .content{
+  width:90vw;
+  height: auto;
+  overflow: hidden;
+}
+.content-text{
+  margin: 10px 0;
+}
+
 @keyframes text-box-open{
-    0%{height: 0; width:0;padding:0}
-    40%{height: 500px; width:0;padding:0}
-    100%{height: 500px; width:90vw;padding:10}
+    0%{width: 0; padding:0}
+    /* 40%{width: 0; padding:0} */
+    100%{width: 90vw; padding:10}
 }
 </style>

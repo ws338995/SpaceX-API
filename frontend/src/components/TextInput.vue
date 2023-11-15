@@ -37,7 +37,7 @@ const props = defineProps({
   color:white;
 }
 .inputBox:has(.input:focus){
-  border-bottom: 2px solid orange;
+  border-bottom: 1px solid orange;
 }
 .inputBox:has(.input:focus) .icon{
   color:orange;
