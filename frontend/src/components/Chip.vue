@@ -32,7 +32,12 @@ onMounted(()=>{
 </script>
 
 <template>
-  <div class="chip" @click="emit('click')" :style="{ 'background-color' : backgroundColor, 'border-color' : color,  'cursor': cursor}">
+  <div 
+    class="chip" 
+    @click="emit('click')" 
+    :style="{ 'background-color' : backgroundColor, 'border-color' : color,  'cursor': cursor}"
+    :class="{ 'selectable' : props.selectable }"
+    >
     <div class="icon" v-if="props.icon">
       <span class="material-symbols-outlined" :style="[props.outlined ? {'color': color} : {'color': '#fff'}]">
         {{ props.icon }}
@@ -55,11 +60,11 @@ onMounted(()=>{
   display:grid;
   grid-template-columns: auto auto;
 }
-.chip:hover{
+.chip.selectable:hover{
   background-color: orange !important;
   border-color:white!important;
 }
-.chip:hover div{
+.chip.selectable:hover div{
   color:white !important;
 }
 .icon{

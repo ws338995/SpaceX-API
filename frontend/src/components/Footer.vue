@@ -1,10 +1,16 @@
 <script setup>
 import { ref, onMounted } from 'vue'
+import SettingsDialog from './SettingsDialog.vue';
+let settings = ref(false);
 </script>
 
 <template>
-  <div class="triangle">
-    <p>WS338995<br/>V0.1</p>
+  <div>
+    <div class="triangle">
+      <p @click="()=>{console.log(!settings);settings = !settings}">Settings</p>
+      <p>WS338995<br/>V0.1</p>
+    </div>
+    <SettingsDialog v-if="settings" @close="settings = !settings"/>
   </div>
 </template>
 
