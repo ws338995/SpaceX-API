@@ -7,7 +7,7 @@ let settings = ref(false);
 <template>
   <div>
     <div class="triangle">
-      <p @click="()=>{console.log(!settings);settings = !settings}">Settings</p>
+      <p @click="()=>{settings = !settings}">Settings</p>
       <p>WS338995<br/>V0.1</p>
     </div>
     <SettingsDialog v-if="settings" @close="settings = !settings"/>

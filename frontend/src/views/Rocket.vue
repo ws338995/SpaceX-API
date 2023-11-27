@@ -6,6 +6,8 @@ import RocketInfo from '../components/RocketInfo.vue';
 import { userStore } from '../stores/user';
 import { useRouter, useRoute } from 'vue-router'
 import Falcon9 from '../components/Falcon9.vue';
+import Starship from '../components/Starship.vue';
+import Falcon1 from '../components/Falcon1.vue';
 const route = useRoute();
 const usr = userStore();
 
@@ -39,6 +41,8 @@ watch(route, () =>{loadData(route.params.id)})
     <div v-if="loaded">
       <RocketInfo :rocket="rocket"/>
       <FalconHeavy v-if="id=='5e9d0d95eda69974db09d1ed'" :rocket="rocket" />
+      <Starship v-else-if="id=='5e9d0d96eda699382d09d1ee'" :rocket="rocket" />
+      <Falcon1 v-else-if="id=='5e9d0d95eda69955f709d1eb'" :rocket="rocket" />
       <Falcon9 v-else :rocket="rocket" />
     </div>
   </main>

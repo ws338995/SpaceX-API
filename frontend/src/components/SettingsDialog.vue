@@ -1,17 +1,51 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { userStore } from '../stores/user';
+import Toggle from '@vueform/toggle'
+
 const usr = userStore();
 const emit = defineEmits(['close'])
+
+const forceMetric = ref(true);
+const massMetric = ref(true);
+const sizeMetric = ref(true);
+
 
 </script>
 
 <template>
   <div class="menu">
     <p>Settings</p>
-    <button @click="usr.toggleUnitsWeight()">Mass</button>
-    <button @click="usr.toggleUnitsForce()">Force</button>
-    <button @click="usr.toggleUnitsSize()">Dimension</button>
+    <div class="settingContainer">
+      <p>Force Units: </p>
+      <Toggle v-model="forceMetric" 
+      id="ForceToggle"
+      class="toggleUnit"
+      name="ForceToggle"
+      @change="usr.toggleUnitsForce();"
+      on-label="kN"
+      off-label="lbf"/>
+    </div>
+    <div class="settingContainer">
+      <p>Mass Units: </p>
+      <Toggle v-model="massMetric" 
+      class="toggleUnit"
+      name="MassToggle"
+      id="MassToggle"
+      @change="usr.toggleUnitsWeight"
+      on-label="kg"
+      off-label="lb"/>
+    </div>
+    <div class="settingContainer">
+      <p>Size Units: </p>
+      <Toggle v-model="sizeMetric" 
+      class="toggleUnit"
+      name="SizeToggle"
+      id="SizeToggle"
+      @change="usr.toggleUnitsSize"
+      on-label="m"
+      off-label="f"/>
+    </div>
 
     <button @click="emit('close')">close</button>
   </div>
@@ -29,9 +63,30 @@ const emit = defineEmits(['close'])
     padding: 20px;
     color: var(--color-text);
     width: 300px;
-    height: 500px;
+    height: 250px;
     user-select: none;
+    animation: open-anim 1s ease;
+    overflow: hidden;
 }
+
+@keyframes open-anim {
+  0%{width: 300px;height:0px}
+  100%{width: 300px; height: 250px;}
+}
+
+.settingContainer{
+  display: flex;
+  margin:10px;
+}
+.settingContainer p {
+  margin-right:10px;
+}
+
+.toggleUnit{
+  --toggle-bg-on: orange;
+  --toggle-border-on: orange;
+}
+
 /* div p{
     text-align: center;
     width:160px;

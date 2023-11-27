@@ -20,7 +20,6 @@ function loadData(id){
   .then(function (response) {
     // handle success
     launch.value = response.data;
-    console.log(launch.value)
     loaded.value = true;
   })
 
@@ -56,7 +55,7 @@ watch(route, () =>{loadData(route.params.id)})
               <div v-for="(core,i) in launch.cores" :key="core.core" style="margin-right:20px">
                 <hr/>
                 <h3>Core {{ i + 1 }} Information</h3>
-                 <Chip text="Core Used"  outlined @click="router.push('/core/'+launch.rocket)" selectable color="orange"/>
+                 <Chip text="Core Used"  outlined @click="router.push('/core/'+core.core)" selectable color="orange"/>
                   <p>Flight No: {{ core.flight }}</p>
                   <p>Gridfins: {{ core.gridfins }}</p>
                   <p>Legs: {{ core.legs }}</p>
@@ -64,7 +63,7 @@ watch(route, () =>{loadData(route.params.id)})
                   <p>Landing Attemped: {{ core.landing_attempt }}</p>
                   <p v-if="core.landing_attempt">Landing Success: {{ core.landing_success }}</p>
                   <p v-if="core.landing_attempt">Landing Type: {{ core.landing_type }}</p>
-                  <Chip v-if="core.landing_attempt" text="Landing Pad"  outlined @click="router.push('/landingpad/'+core.landpad)" selectable color="orange"/>
+                  <Chip v-if="core.landing_attempt" text="Landing Pad"  outlined @click="router.push('/map/'+core.landpad)" selectable color="orange"/>
                 </div>
               <div style="margin-right:20px">
                 <hr/>
@@ -80,7 +79,7 @@ watch(route, () =>{loadData(route.params.id)})
                 <p>Recovery Attempted: {{ launch.fairings.recovery_attempt }}</p>
                 <p>Recovered: {{ launch.fairings.recovered }}</p>
                 <div style="display: flex;">
-                  <Chip v-for="(s,i) in launch.fairings.ships" :key="i" :text="'Ship ' + (i+1)" selectable outlined @click="router.push('/ship/'+s)" color="white"/>
+                  <Chip v-for="(s,i) in launch.fairings.ships" :key="i" :text="'Ship ' + (i+1)" selectable outlined @click="router.push('/map/'+s)" color="white"/>
                 </div>
               </div>
             </div>

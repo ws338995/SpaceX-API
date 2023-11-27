@@ -9,7 +9,7 @@ const usr = userStore()
 
 function login(){
   usr.login();
-  router.push({ path: '/' })
+  router.push({ path: '/map/' })
 }
 </script>
 

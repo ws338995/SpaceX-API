@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue'
 import RocketList from './RocketList.vue';
 import CrewList from './CrewList.vue';
 import LaunchList from './LaunchList.vue';
-
+import router from '../router';
 let selectedMenu = ref('')
 
 function selectMenu(menu){
@@ -11,6 +11,10 @@ function selectMenu(menu){
     selectedMenu.value = "";
   }else{
     selectedMenu.value = menu;
+  }
+
+  if(menu =='map'){
+    router.push('/map/')
   }
 }
 
@@ -22,6 +26,7 @@ onMounted(() => {
 <template>
   <div>
     <div class="bar">
+      <div class="btn" @click="selectMenu('map')" :class="{selected : selectedMenu == 'map'}" >MAP</div>
       <div class="btn" @click="selectMenu('launches')" :class="{selected : selectedMenu == 'launches'}" >LAUNCHES</div>
       <div class="btn" @click="selectMenu('rockets')" :class="{selected : selectedMenu == 'rockets'}">ROCKETS</div>
       <div class="btn" @click="selectMenu('crews')" :class="{selected : selectedMenu == 'crews'}">CREWS</div>

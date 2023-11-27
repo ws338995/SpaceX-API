@@ -58,6 +58,7 @@ onMounted(()=>{
   border: 1px solid rgba(255, 255, 255, 0);
   transition:0.2s;
   display:grid;
+  margin:5px;
   grid-template-columns: auto auto;
 }
 .chip.selectable:hover{

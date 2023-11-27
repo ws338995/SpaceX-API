@@ -169,8 +169,7 @@ function selectProp(){
           </div>
         </div>
 
-
-        <div class="infoBox" v-if="activeStage1">
+        <div class="infoBox" v-if="activeStage2">
           <div class="content">
             <h1 style="display:inline-block">First Stage</h1>
             <div style="display:inline-block; float:right;">
@@ -191,10 +190,6 @@ function selectProp(){
               <p>Burn Time: <b>{{ props.rocket.first_stage.burn_time_sec }} seconds</b></p>
             </div>
           </div>
-        </div>
-
-
-        <div class="infoBox" v-if="activeStage2">
           <div class="content">
             <h1 style="display:inline-block">Second Stage</h1>
             <div style="display:inline-block; float:right;">

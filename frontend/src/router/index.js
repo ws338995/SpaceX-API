@@ -3,6 +3,8 @@ import Home from '../views/Home.vue'
 import Rocket from '../views/Rocket.vue'
 import Login from '../views/Login.vue'
 import Crew from '../views/Crew.vue'
+import Core from '../views/Core.vue'
+import Map from '../views/Map.vue'
 import Launch from '../views/Launch.vue'
 import { userStore } from '../stores/user'
 
@@ -40,6 +42,39 @@ const router = createRouter({
       path: '/crew/:id',
       name: 'crew',
       component: Crew,
+      beforeEnter:(to, from, next)=>{
+        const usr = userStore();
+
+        if(usr.getLoggedIn) next()
+        else next('/login')
+      }
+    },
+    {
+      path: '/core/:id',
+      name: 'core',
+      component: Core,
+      beforeEnter:(to, from, next)=>{
+        const usr = userStore();
+
+        if(usr.getLoggedIn) next()
+        else next('/login')
+      }
+    },
+    {
+      path: '/map',
+      name: 'map',
+      component: Map,
+      beforeEnter:(to, from, next)=>{
+        const usr = userStore();
+
+        if(usr.getLoggedIn) next()
+        else next('/login')
+      }
+    },
+    {
+      path: '/map/:id',
+      name: 'mapSpecific',
+      component: Map,
       beforeEnter:(to, from, next)=>{
         const usr = userStore();
 
