@@ -7,8 +7,11 @@ let settings = ref(false);
 <template>
   <div>
     <div class="triangle">
-      <p @click="()=>{settings = !settings}">Settings</p>
-      <p>WS338995<br/>V0.1</p>
+      <p class="settingsBtn" @click="()=>{settings = !settings}">
+        <span class="material-symbols-outlined">
+          settings
+        </span>
+      </p>
     </div>
     <SettingsDialog v-if="settings" @close="settings = !settings"/>
   </div>
@@ -21,20 +24,28 @@ div{
     bottom:0;
     right:0;
     color: var(--color-text);
-    width: 300px;
+    width: 150px;
     height:60px;
     user-select: none;
 }
 div p{
     text-align: center;
     width:160px;
-    transform: translate(-140px, 50px);
+    transform: translate(-98px, 30px);
+}
+.settingsBtn{
+  cursor: pointer;
+  transition:0.2s;
+}
+.settingsBtn:hover{
+  color:orange;
+
 }
 .triangle {
    width: 0px;
    height: 0px;
    border-style: solid;
-   border-width: 0 0 100px 300px;
+   border-width: 0 0 60px 60px;
    border-color: transparent transparent var(--color-background-mute) transparent;
    transform: rotate(0deg);
 }

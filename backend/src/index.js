@@ -1,9 +1,18 @@
+require('dotenv').config()
 const express = require('express');
 
 const axios = require('axios');
 const app = express();
+app.use(express.json());
+const cors = require('cors');
 
-const cors = require('cors')
+const mysql = require('mysql');
+var connection = mysql.createConnection({
+    host     : process.env.DB_HOST,
+    user     : process.env.DB_USER,
+    password : process.env.DB_PASS,
+    database : process.env.DB_NAME
+  });
 
 const PORT  = process.env.PORT || 4000;
 app.use(cors())
@@ -36,4 +45,33 @@ app.get('/shipLocation/:shipId', (req, res) => {
         console.log('Error: ', err.message);
         res.send(err);
     });
+})
+
+// this one is for our login
+app.post('/login', (req, res) => {
+    //lets get the ID from the params
+    let username = req.body.username;
+    let passwordHash = req.body.passwordHash;
+
+    //lets check if this user exists in our db
+    connection.connect();
+ 
+    connection.query('SELECT * FROM users WHERE Username = ?',[username], function (error, results) {
+        if (error) throw error;
+        if(results.length == 1){
+            // lets check the password hash
+            bcrypt
+            .compare(password, hash)
+            .then(resp => {
+                res.send(resp);
+            })
+            .catch(err => console.error(err.message))      
+        }else if(results.length > 1){
+            console.log("[!] ERROR: Multiple users with this username in the Database: " + username);
+        }else{
+            res.sendStatus(404);
+        }
+    });
+     
+    connection.end();
 })

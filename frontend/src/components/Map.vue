@@ -26,6 +26,8 @@ const props = defineProps({
 })
 
 
+const shipLocationsLoaded = ref(false);
+
 const showTypes = ref({
     'ships': true,
     'landingPads': true,
@@ -36,7 +38,7 @@ onUpdated(()=>{
     if(props.defaultSelectedSite){
         selectSite(props.defaultSelectedSite);
     }
-    if(props.ships){
+    if(props.ships && shipLocationsLoaded.value == false){
         props.ships.forEach((ship)=>{
             // if for some rason the location data appears, dont do the random stuff!
             if(ship.link == null){
@@ -47,6 +49,7 @@ onUpdated(()=>{
                 getShipLocation(ship);
             }
         })
+        shipLocationsLoaded.value = true;
     }
 })
 
@@ -1455,7 +1458,7 @@ path{
     transition:0.1s;
 }
 path:hover{
-    fill:rgba(255, 166, 0, 0.336);
+    fill:rgba(6,6,6,1);
 }
 
 .map-key{
@@ -1468,7 +1471,9 @@ path:hover{
 .disclaimer{
     position:absolute;
     bottom:80px;
-    left:10px;
+    left:0;right:0;
+    width: fit-content;
+    margin:auto;
     border-bottom:1px solid orange;
     padding:5px;
     background-color:rgba(12, 12, 12, 0.4);

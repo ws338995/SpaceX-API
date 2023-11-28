@@ -89,11 +89,11 @@ watch(route, () =>{loadData(route.params.id)})
 <template>
   <main>
     <SiteInfo v-if="siteSelected" :site="siteSelected"/>
-    <!-- <AllSites v-if="loadedLandpads && loadedLaunchpads && loadedShips"
+    <AllSites v-if="loadedLandpads && loadedLaunchpads && loadedShips"
       @select-site="selectSite"
       :land-sites="landingPads" 
       :ships="ships"
-      :launch-sites="launchPads"/> -->
+      :launch-sites="launchPads"/>
     <Map ref="map" 
       :launch-sites="launchPads" 
       :ships="ships"

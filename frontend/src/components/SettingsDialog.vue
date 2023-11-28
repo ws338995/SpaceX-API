@@ -47,7 +47,11 @@ const sizeMetric = ref(true);
       off-label="f"/>
     </div>
 
-    <button @click="emit('close')">close</button>
+    <div class="closeBtn" @click="emit('close')">
+      <span class="material-symbols-outlined">
+        close
+      </span>
+    </div>
   </div>
 </template>
 
@@ -57,9 +61,9 @@ const sizeMetric = ref(true);
     position:absolute;
     bottom:0;
     margin:20px;
-    box-shadow: 0 0 10px black;
+    box-shadow: 0 0 25px black;
     background-color: var(--color-background);
-    border: 2px solid orange;
+    border-right: 2px solid orange;
     padding: 20px;
     color: var(--color-text);
     width: 300px;
@@ -70,8 +74,8 @@ const sizeMetric = ref(true);
 }
 
 @keyframes open-anim {
-  0%{width: 300px;height:0px}
-  100%{width: 300px; height: 250px;}
+  0%{width: 300px;height:0px; padding:0 20px;}
+  100%{width: 300px; height: 250px; padding:20px;}
 }
 
 .settingContainer{
@@ -85,6 +89,16 @@ const sizeMetric = ref(true);
 .toggleUnit{
   --toggle-bg-on: orange;
   --toggle-border-on: orange;
+}
+
+.closeBtn{
+  cursor: pointer;
+  position:absolute;
+  top:10px;
+  right:10px;
+}
+.closeBtn:hover{
+  color:orange;
 }
 
 /* div p{
