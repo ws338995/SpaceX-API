@@ -14,7 +14,11 @@ const usr = userStore();
 
 const map = ref()
 
-let loaded = ref(false);
+let loadedLandpads = ref(false);
+let loadedLaunchpads = ref(false);
+let loadedShips = ref(false);
+
+let loadedSpecific = ref(false);
 
 let landingPads = ref();
 let launchPads = ref();
@@ -29,19 +33,19 @@ function loadData(id){
     .then(function (response) {
       // handle success
       landingPads.value = response.data;
-      loaded.value = true;
+      loadedLandpads.value = true;
     })
     axios.get('https://api.spacexdata.com/v4/launchpads/')
     .then(function (response) {
       // handle success
       launchPads.value = response.data;
-      loaded.value = true;
+      loadedLaunchpads.value = true;
     })
     axios.get('https://api.spacexdata.com/v4/ships/')
     .then(function (response) {
       // handle success
       ships.value = response.data;
-      loaded.value = true;
+      loadedShips.value = true;
     })
     if(id){
       // we dont know if the ID is for a launchpad or landpad, so check both
@@ -49,20 +53,20 @@ function loadData(id){
       .then(function (response) {
         // handle success
         siteSelected.value = response.data;
-        loaded.value = true;
+        loadedSpecific.value = true;
       }).catch(function (response){
         if(response.response.status == 404){
           axios.get('https://api.spacexdata.com/v4/landpads/' + id)
           .then(function (response) {
             // handle success
             siteSelected.value = response.data;
-            loaded.value = true;
+            loadedSpecific.value = true;
           }).catch(function (response){
             axios.get('https://api.spacexdata.com/v4/ships/' + id)
             .then(function (response) {
               // handle success
               siteSelected.value = response.data;
-              loaded.value = true;
+              loadedSpecific.value = true;
             })
           })
         }
@@ -85,11 +89,11 @@ watch(route, () =>{loadData(route.params.id)})
 <template>
   <main>
     <SiteInfo v-if="siteSelected" :site="siteSelected"/>
-    <AllSites
+    <!-- <AllSites v-if="loadedLandpads && loadedLaunchpads && loadedShips"
       @select-site="selectSite"
       :land-sites="landingPads" 
       :ships="ships"
-      :launch-sites="launchPads"/>
+      :launch-sites="launchPads"/> -->
     <Map ref="map" 
       :launch-sites="launchPads" 
       :ships="ships"

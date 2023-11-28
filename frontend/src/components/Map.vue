@@ -16,11 +16,20 @@ const selectedSite = ref(null);
 
 const currentZoomLevel = ref(10);
 
+const showDisclaimer = ref(true);
+
 const props = defineProps({
   launchSites: Array,
   landingSites: Array,
   defaultSelectedSite: Object,
   ships: Array,
+})
+
+
+const showTypes = ref({
+    'ships': true,
+    'landingPads': true,
+    'launchPads': true
 })
 
 onUpdated(()=>{
@@ -125,9 +134,16 @@ function getShipLocation(ship){
 <template>
     <div id="mapContainer">
         <div class="map-key">
-            <Chip outlined text="Launch Pads" color="#1e90ff"/>
-            <Chip outlined text="Landing Pads" color="red"/>
-            <Chip outlined text="Ships" color="rgb(225, 255, 30)"/>
+            <Chip :outlined="!showTypes.launchPads" text="Launch Pads" color="#1e90ff" selectable @click="()=>{showTypes.launchPads = !showTypes.launchPads}"/>
+            <Chip :outlined="!showTypes.landingPads" text="Landing Pads" color="red" selectable @click="()=>{showTypes.landingPads = !showTypes.landingPads}"/>
+            <Chip :outlined="!showTypes.ships" text="Ships" color="rgb(156, 177, 24)" selectable @click="()=>{showTypes.ships = !showTypes.ships}"/>
+        </div>
+        <div class="disclaimer" v-if="showDisclaimer">
+            <p>There is no Geo Location data for some ships, so they will be placed somewhere random along around the US East Coast!
+                <span class="material-symbols-outlined closeBtn" @click="()=>{showDisclaimer = false;}">
+                    close
+                </span>
+            </p>
         </div>
         <SvgPanZoom
         @created="registerSvgPanZoom">
@@ -1355,36 +1371,40 @@ function getShipLocation(ship){
 
                 </g>
 
-                <g v-for="site in launchSites" :key="site.id" @click="selectSite(site)">
-                    <circle
-                        :cx="calcLong(site.longitude)" 
-                        :cy="calcLat(site.latitude)" 
-                        :r="currentZoomLevel"
-                        :class="[selectedSite && selectedSite.id == site.id ? 'selected' : '', 'launch-site']"
-                    >
-                    </circle>
+                <g v-if="showTypes.launchPads">
+                    <g v-for="site in launchSites" :key="site.id" @click="selectSite(site)">
+                        <circle
+                            :cx="calcLong(site.longitude)" 
+                            :cy="calcLat(site.latitude)" 
+                            :r="currentZoomLevel"
+                            :class="[selectedSite && selectedSite.id == site.id ? 'selected' : '', 'launch-site']"
+                        >
+                        </circle>
+                    </g>
                 </g>
 
-                <g v-for="site in landingSites" :key="site.id" @click="selectSite(site)">
-                    <circle
-                        :cx="calcLong(site.longitude)" 
-                        :cy="calcLat(site.latitude)" 
-                        :r="currentZoomLevel"
-                        :class="[selectedSite && selectedSite.id == site.id ? 'selected' : '', 'land-site']"
-                    >
-                    </circle>
+                <g v-if="showTypes.landingPads">
+                    <g v-for="site in landingSites" :key="site.id" @click="selectSite(site)">
+                        <circle
+                            :cx="calcLong(site.longitude)" 
+                            :cy="calcLat(site.latitude)" 
+                            :r="currentZoomLevel"
+                            :class="[selectedSite && selectedSite.id == site.id ? 'selected' : '', 'land-site']"
+                        >
+                        </circle>
+                    </g>
                 </g>
 
-                <!-- So funny thing about ships right, the API doesnt have any long-lat data for them
-                So to make it look cooler, Im just gonna place them randomly somewhere on the map lol -->
-                <g v-for="site in ships" :key="site.id" @click="selectSite(site)">
-                    <circle
-                        :cx="calcLong(site.longitude)" 
-                        :cy="calcLat(site.latitude)" 
-                        :r="currentZoomLevel"
-                        :class="[selectedSite && selectedSite.id == site.id ? 'selected' : '', 'ship']"
-                    >
-                    </circle>
+                <g  v-if="showTypes.ships">
+                    <g v-for="site in ships" :key="site.id" @click="selectSite(site)">
+                        <circle
+                            :cx="calcLong(site.longitude)" 
+                            :cy="calcLat(site.latitude)" 
+                            :r="currentZoomLevel"
+                            :class="[selectedSite && selectedSite.id == site.id ? 'selected' : '', 'ship']"
+                        >
+                        </circle>
+                    </g>
                 </g>
             </svg>
         </SvgPanZoom>
@@ -1421,7 +1441,7 @@ circle.land-site{
     fill:rgb(255, 30, 68,0.3);
 }
 circle.ship{
-    stroke:rgb(225, 255, 30);
+    stroke:rgb(156, 177, 24);
     fill:rgba(255, 255, 30, 0.3);
 }
 circle.selected{
@@ -1444,5 +1464,22 @@ path:hover{
     padding:10px;
     margin:10px;
     border-left:1px solid orange;
+}
+.disclaimer{
+    position:absolute;
+    bottom:80px;
+    left:10px;
+    border-bottom:1px solid orange;
+    padding:5px;
+    background-color:rgba(12, 12, 12, 0.4);
+
+}
+.disclaimer *{
+    display:inline-block;
+    vertical-align:top;
+}
+.disclaimer .closeBtn:hover{
+    cursor:pointer;
+    color:orange;
 }
 </style>

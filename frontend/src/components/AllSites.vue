@@ -65,7 +65,7 @@ onMounted(()=>{
 
 <template>
   <div class="cont">
-    <tree-view id="my-tree" :initial-model="dataModel"></tree-view>
+    <tree-view id="entitiesTree" :initial-model="dataModel"></tree-view>
     <!-- <Chip 
     selectable
     @click="emit('selectSite',l)" 
@@ -122,4 +122,5 @@ b{
 .content-text{
   margin: 10px 0;
 }
+
 </style>

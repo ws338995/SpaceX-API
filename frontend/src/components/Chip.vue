@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, defineEmits } from 'vue'
+import { ref, onMounted, defineEmits, onUpdated } from 'vue'
 
 const emit = defineEmits(['click'])
 
@@ -13,9 +13,9 @@ const props = defineProps({
 
 const color = ref('#1b1b1b');
 
-let backgroundColor = color.value;
+const backgroundColor = ref(color.value);
 
-let cursor = ref('auto');
+const cursor = ref('auto');
 
 onMounted(()=>{
   if(props.selectable){
@@ -23,9 +23,18 @@ onMounted(()=>{
   }
   if(props.color){color.value=props.color}
   if(props.outlined){
-    backgroundColor = 'rgba(0,0,0,0)';
+    backgroundColor.value = 'rgba(0,0,0,0)';
   }else{
-    backgroundColor = color.value;
+    backgroundColor.value = color.value;
+  }
+})
+
+onUpdated(()=>{
+  if(props.color){color.value=props.color}
+  if(props.outlined){
+    backgroundColor.value = 'rgba(0,0,0,0)';
+  }else{
+    backgroundColor.value = color.value;
   }
 })
 

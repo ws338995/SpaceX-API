@@ -61,19 +61,8 @@ const router = createRouter({
       }
     },
     {
-      path: '/map',
+      path: '/map/:id?',
       name: 'map',
-      component: Map,
-      beforeEnter:(to, from, next)=>{
-        const usr = userStore();
-
-        if(usr.getLoggedIn) next()
-        else next('/login')
-      }
-    },
-    {
-      path: '/map/:id',
-      name: 'mapSpecific',
       component: Map,
       beforeEnter:(to, from, next)=>{
         const usr = userStore();
