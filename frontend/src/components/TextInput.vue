@@ -1,12 +1,25 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUpdated } from 'vue'
 
 const props = defineProps({
   label:String,
   icon:String,
   placeholder:String,
-  type:String
+  type:String,
+  value: String
 })
+
+const value = ref('');
+
+const emit = defineEmits(['change'])
+
+onMounted(()=>{
+  value.value = props.value;
+})
+
+function change(){
+  emit('change',value.value);
+}
 
 </script>
 
@@ -17,7 +30,7 @@ const props = defineProps({
         {{ props.icon }}
       </span>
     </div>
-    <input class="input" :type="props.type" :placeholder="props.placeholder"/>
+    <input @change="change" v-model="value" class="input" :type="props.type" :placeholder="props.placeholder"/>
   </div>
 </template>
 

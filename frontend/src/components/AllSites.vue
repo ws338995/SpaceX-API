@@ -67,27 +67,35 @@ onMounted(()=>{
 <template>
   <div class="wrapper">
     <div class="cont" :class="[expanded ? '' : 'minimized']">
-      <Chip 
-      selectable
-      @click="emit('selectSite',l)" 
-      v-for="(l,i) in props.landSites" :key="i" 
-      :text="l.name" 
-      outlined 
-      color="red"/>
-      <Chip 
-      selectable
-      @click="emit('selectSite',ll)" 
-      v-for="(ll,i) in props.launchSites" :key="i" 
-      :text="ll.name" 
-      outlined 
-      color="#1e90ff"/>
-      <Chip 
-      selectable
-      @click="emit('selectSite',lll)" 
-      v-for="(lll,i) in props.ships" :key="i" 
-      :text="lll.name" 
-      outlined 
-      color="rgb(225, 255, 30)"/>
+      <div>
+        <Chip 
+        selectable
+        @click="emit('selectSite',l)" 
+        v-for="(l,i) in props.landSites" :key="i" 
+        :text="l.name" 
+        outlined 
+        color="red"/>
+      </div>
+      <hr/>
+      <div>
+        <Chip 
+        selectable
+        @click="emit('selectSite',ll)" 
+        v-for="(ll,i) in props.launchSites" :key="i" 
+        :text="ll.name" 
+        outlined 
+        color="#1e90ff"/>
+      </div>
+      <hr/>
+      <div>
+        <Chip 
+        selectable
+        @click="emit('selectSite',lll)" 
+        v-for="(lll,i) in props.ships" :key="i" 
+        :text="lll.name" 
+        outlined 
+        color="rgb(225, 255, 30)"/>
+      </div>
     </div>
     <div class="expandBtn" @click="()=>{expanded = !expanded}">
       <span class="material-symbols-outlined">
@@ -113,9 +121,12 @@ onMounted(()=>{
   padding:15px;
   border-left:2px solid rgba(170, 120, 12,1);
   overflow-y: scroll;
+  transition: 0.2s;
+}
+
+.cont div{
   display:flex;
   flex-wrap: wrap;
-  transition: 0.2s;
 }
 
 .wrapper .expandBtn{

@@ -121,7 +121,7 @@ function getShipLocation(ship){
     const match = ship.link.match(regex);
     if(match){
         let id = match[1];
-        axios.get('http://localhost:4000/shipLocation/'+id)
+        axios.get(import.meta.env.VITE_BACKEND + '/shipLocation/'+id)
         .then(resp =>{
             ship.latitude = resp.data.lat;
             ship.longitude = resp.data.lon;

@@ -50,6 +50,7 @@ app.get('/shipLocation/:shipId', (req, res) => {
 // this one is for our login
 app.post('/login', (req, res) => {
     //lets get the ID from the params
+    console.log(req.body)
     let username = req.body.username;
     let passwordHash = req.body.passwordHash;
 
@@ -60,18 +61,24 @@ app.post('/login', (req, res) => {
         if (error) throw error;
         if(results.length == 1){
             // lets check the password hash
-            bcrypt
-            .compare(password, hash)
-            .then(resp => {
-                res.send(resp);
-            })
-            .catch(err => console.error(err.message))      
+            // bcrypt
+            // .compare(password, hash)
+            // .then(resp => {
+            //     res.send(resp);
+            // })
+            // .catch(err => console.error(err.message))      
+            if(results[0].passwordHash == passwordHash){
+                connection.end();
+                res.status(200).send();
+            }
         }else if(results.length > 1){
+            connection.end();
             console.log("[!] ERROR: Multiple users with this username in the Database: " + username);
+            res.status(500).send("ERROR: Multiple users with this username in the Database");
         }else{
+            connection.end();
             res.sendStatus(404);
         }
     });
      
-    connection.end();
 })
