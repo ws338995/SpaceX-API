@@ -31,21 +31,6 @@ async function validatePass (pass,hash){
     return await bcrypt.compare(pass, hash);
 }
 
-async function checkUsernameTaken(username){
-    try {
-        let usrs = await connection.query('SELECT * FROM users WHERE Username = ?',[username])
-        console.log(usrs);
-        if(usrs.length > 0){
-            return false;
-        }else{
-            return true;
-        }
-    } catch (e) {
-        console.log(e)
-        return false;
-    }
-}
-
 // here we are grabbing the geolocation data of the ships!
 // lets trick this website into thinking we are a normal browser user, so we dont need to pay for their API
 

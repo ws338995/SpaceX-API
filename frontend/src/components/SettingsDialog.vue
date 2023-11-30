@@ -74,7 +74,7 @@ const sizeMetric = ref(true);
     width: 300px;
     height: 250px;
     user-select: none;
-    animation: open-anim 1s ease;
+    animation: open-anim 0.5s ease;
     overflow: hidden;
 }
 
