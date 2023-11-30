@@ -56,7 +56,7 @@ app.get('/shipLocation/:shipId', (req, res) => {
         res.send({"lat":response.data.lat, "lon":response.data.lon});
     })
     .catch(err => {
-        console.log('[!] ERROR: ', err.message);
+        console.log('[!] ERROR Getting ship location: ', err.message);
         res.send(err);
     });
 })
@@ -72,9 +72,11 @@ app.post('/login', async (req, res) => {
         if(results.length == 1){
             // lets check the password hash
             if(await validatePass(password,results[0].PasswordHash)){
+                console.log("[*] Login from: " + req.ip + " User: " + username);
                 res.status(200).send();
             }
             else{
+                console.log("[*] Attempted Login from: " + req.ip + " User: " + username + " | WRONG PASS");
                 res.status(401).send("Wrong password");
             }
         }else if(results.length > 1){
@@ -105,6 +107,7 @@ app.post('/register', async (req, res) => {
         if (error) throw error;
         if(results.length > 0){
             // username is taken!
+            console.log("[*] Attempted registeration from: " + req.ip + " | Username taken (" + username + ")");
             res.status(403).send();
         }else{
             //usename is free, lets register!
