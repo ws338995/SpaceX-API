@@ -24,7 +24,8 @@ let landingPads = ref();
 let launchPads = ref();
 let ships = ref();
 
-let specficPad = ref();
+const showDisclaimer = ref(true);
+
 
 let siteSelected = ref(null);
 
@@ -100,6 +101,13 @@ watch(route, () =>{loadData(route.params.id)})
       :landing-sites="landingPads" 
       :defaultSelectedSite="siteSelected" 
       @select-site="(s)=>siteSelected = s"/>
+    <div class="disclaimer" v-if="showDisclaimer">
+          <p>There is no Geo Location data for some ships, so they will be placed somewhere random along around the US East Coast!
+              <span class="material-symbols-outlined closeBtn" @click="()=>{showDisclaimer = false;}">
+                  close
+              </span>
+          </p>
+      </div>
   </main>
 </template>
 
@@ -120,5 +128,25 @@ watch(route, () =>{loadData(route.params.id)})
 }
 .content-text{
   padding-left:10px
+}
+
+.disclaimer{
+    position:absolute;
+    margin:auto;
+    bottom:10px;
+    right:0;left:0;
+    width: fit-content;
+    border-bottom:1px solid orange;
+    padding:5px;
+    background-color:rgba(12, 12, 12, 0.4);
+
+}
+.disclaimer *{
+    display:inline-block;
+    vertical-align:top;
+}
+.disclaimer .closeBtn:hover{
+    cursor:pointer;
+    color:orange;
 }
 </style>

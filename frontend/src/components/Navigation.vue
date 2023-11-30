@@ -16,6 +16,9 @@ function selectMenu(menu){
   if(menu =='map'){
     router.push('/map/')
   }
+  else if(menu == 'events'){
+    router.push('/events')
+  }
 }
 
 // lifecycle hooks
@@ -27,6 +30,7 @@ onMounted(() => {
   <div>
     <div class="bar">
       <div class="btn" @click="selectMenu('map')" :class="{selected : selectedMenu == 'map'}" >MAP</div>
+      <div class="btn" @click="selectMenu('events')" :class="{selected : selectedMenu == 'events'}" >EVENTS</div>
       <div class="btn" @click="selectMenu('launches')" :class="{selected : selectedMenu == 'launches'}" >LAUNCHES</div>
       <div class="btn" @click="selectMenu('rockets')" :class="{selected : selectedMenu == 'rockets'}">ROCKETS</div>
       <div class="btn" @click="selectMenu('crews')" :class="{selected : selectedMenu == 'crews'}">CREWS</div>

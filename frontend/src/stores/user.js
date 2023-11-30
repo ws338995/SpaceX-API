@@ -1,14 +1,14 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 
+import router from '../router';
+
 export const userStore = defineStore(
   'user',
   () => {
   
     const loggedIn = ref(false);
-    const accessToken = ref(null);
-    const refreshToken = ref(null);
-
+    
     const unitsWeight = ref('kg')
     const unitsSize = ref('meters')
     const unitsForce = ref('kN')
@@ -25,6 +25,7 @@ export const userStore = defineStore(
     }
     function logout(){
       loggedIn.value = false;
+      router.push('/');
     }
     function toggleUnitsWeight(){
       if(unitsWeight.value == 'kg'){
@@ -49,7 +50,8 @@ export const userStore = defineStore(
     }
 
     return { 
-      getLoggedIn, 
+      getLoggedIn,
+      loggedIn,
       login, 
       logout, 
       toggleUnitsWeight, getUnitsWeight,
@@ -58,6 +60,6 @@ export const userStore = defineStore(
     }
   },
   {
-    persist: true,
+    persist: true
   }
 )

@@ -14,6 +14,7 @@ const usr = userStore();
 
 const username = ref('');
 const pass = ref('');
+const confPass = ref('');
 
 const error = ref(null);
 
@@ -24,27 +25,31 @@ function closeError(){
   error.value = null;
 }
 
-function attempLogin(){
-  axios.post(import.meta.env.VITE_BACKEND + '/login',
-  {
-    'username':username.value,
-    'password':pass.value
-  })
-  .then((resp)=>{
-    console.log(resp)
-    if(resp.status == 200){
-      login();
-    }
-  }).catch((resp)=>{
-    if(resp.response.status === 404){
-      showError("No user with this username found!")
-    }
-    else if(resp.response.status === 401){
-      showError("Incorrect Password")
-    }else{
-      showError(resp.response.status + " - " + resp.response.data)
-    }
-  })
+function attemptRegister(){
+  //first check that the passwords match
+  if(pass.value === confPass.value){
+    axios.post(import.meta.env.VITE_BACKEND + '/register',
+    {
+      'username':username.value,
+      'password':pass.value
+    })
+    .then((resp)=>{
+      console.log(resp)
+      if(resp.status == 200){
+        //hooray the register was great success!
+        // lets log the user in!
+        login();
+      }
+    }).catch((resp)=>{
+      if(resp.response.status === 403){
+        showError("Username is taken!")
+      }else{
+        showError(resp.response.status + " - " + resp.response.message)
+      }
+    })
+  }else{
+    showError("Passwords Do Not Match!")
+  }
 }
 
 function login(){
@@ -61,10 +66,9 @@ function login(){
       <div class="form">
         <TextInput @change="(v)=>{username = v}" type="text" placeholder="Username" icon="person"/>
         <TextInput @change="(v)=>{pass = v}" type="password" placeholder="Password" icon="key"/>
+        <TextInput @change="(v)=>{confPass = v}" type="password" placeholder="Confirm Password" icon="key"/>
         <div style="display:flex;justify-content: center;align-items: center;">
-          <Button text="Login" width="150px" @click="attempLogin"/>
-          <p>or</p>
-          <Button text="Register" width="150px" @click="router.push({ path: '/register' })"/>
+          <Button text="Register" width="150px" @click="attemptRegister"/>
         </div>
       </div>
     </div>

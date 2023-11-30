@@ -17,56 +17,12 @@ const props = defineProps({
   landSites: Array,
 })
 
-const dataModel = ref([
-  {
-    id: 0,
-    label: "Ships",
-    children: []
-  },
-  {
-    id: 0,
-    label: "Landing Pads",
-    children: []
-  },
-  {
-    id: 0,
-    label: "Launching Pads",
-    children: []
-  },
-])
-
-onMounted(()=>{
-  dataModel.value[0].children = props.ships.map((s)=>{
-    return{
-      id: s.id,
-      label: s.name,
-      selectable:true,
-    }
-  });
-  dataModel.value[1].children = props.landSites.map((s)=>{
-    return{
-      id: s.id,
-      label: s.name,
-      selectable:true,
-    }
-  });
-  dataModel.value[2].children = props.launchSites.map((s)=>{
-    return{
-      id: s.id,
-      label: s.name,
-      treeNodeSpec: {
-        title: s.name,
-        selectable: true,
-      }
-    }
-  });
-})
-
 </script>
 
 <template>
   <div class="wrapper">
     <div class="cont" :class="[expanded ? '' : 'minimized']">
+      <h3>Landing Pads</h3>
       <div>
         <Chip 
         selectable
@@ -77,6 +33,7 @@ onMounted(()=>{
         color="red"/>
       </div>
       <hr/>
+      <h3>Launching Pads</h3>
       <div>
         <Chip 
         selectable
@@ -87,6 +44,7 @@ onMounted(()=>{
         color="#1e90ff"/>
       </div>
       <hr/>
+      <h3>Ships</h3>
       <div>
         <Chip 
         selectable

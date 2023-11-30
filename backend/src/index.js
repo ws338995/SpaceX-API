@@ -1,5 +1,8 @@
 require('dotenv').config()
 const express = require('express');
+const bcrypt = require("bcrypt")
+
+const saltRounds = 10
 
 const axios = require('axios');
 const app = express();
@@ -20,7 +23,33 @@ app.listen(PORT,()=>{
     console.log("[*] Server running on port: " + PORT)
 });
 
-// lets trick the website into thinking we are a normal browser user, so we dont need to pay for their API
+async function genereateHash(pass){
+    return await bcrypt.hash(pass, saltRounds)
+}
+
+async function validatePass (pass,hash){
+    return await bcrypt.compare(pass, hash);
+}
+
+async function checkUsernameTaken(username){
+    try {
+        let usrs = await connection.query('SELECT * FROM users WHERE Username = ?',[username])
+        console.log(usrs);
+        if(usrs.length > 0){
+            return false;
+        }else{
+            return true;
+        }
+    } catch (e) {
+        console.log(e)
+        return false;
+    }
+}
+
+// here we are grabbing the geolocation data of the ships!
+// lets trick this website into thinking we are a normal browser user, so we dont need to pay for their API
+
+// headers are ripped straight out of the browser request, I'm surprised this works actually
 let headers = {
     "Accept": "*/*",
     // "Referer": "https://www.marinetraffic.com/en/ais/details/ships/shipid:439594/mmsi:367191410/imo:9458884/vessel:GO_PURSUIT",
@@ -42,42 +71,62 @@ app.get('/shipLocation/:shipId', (req, res) => {
         res.send({"lat":response.data.lat, "lon":response.data.lon});
     })
     .catch(err => {
-        console.log('Error: ', err.message);
+        console.log('[!] ERROR: ', err.message);
         res.send(err);
     });
 })
 
 // this one is for our login
-app.post('/login', (req, res) => {
+app.post('/login', async (req, res) => {
     //lets get the ID from the params
-    console.log(req.body)
     let username = req.body.username;
-    let passwordHash = req.body.passwordHash;
-
-    //lets check if this user exists in our db
-    connection.connect();
+    let password = req.body.password;
  
-    connection.query('SELECT * FROM users WHERE Username = ?',[username], function (error, results) {
+    connection.query('SELECT * FROM users WHERE Username = ?',[username], async function (error, results) {
         if (error) throw error;
         if(results.length == 1){
             // lets check the password hash
-            // bcrypt
-            // .compare(password, hash)
-            // .then(resp => {
-            //     res.send(resp);
-            // })
-            // .catch(err => console.error(err.message))      
-            if(results[0].passwordHash == passwordHash){
-                connection.end();
+            if(await validatePass(password,results[0].PasswordHash)){
                 res.status(200).send();
             }
+            else{
+                res.status(401).send("Wrong password");
+            }
         }else if(results.length > 1){
-            connection.end();
             console.log("[!] ERROR: Multiple users with this username in the Database: " + username);
-            res.status(500).send("ERROR: Multiple users with this username in the Database");
+            res.status(500).send("ERROR: Multiple users with this username in the Database - Contact an admin or something");
         }else{
-            connection.end();
             res.sendStatus(404);
+        }
+    });
+     
+})
+
+
+app.post('/register', async (req, res) => {
+    //lets get the ID from the params
+    let username = req.body.username;
+    
+    if(!username){
+        res.status(400).send("No Username!");
+    }
+    if(!req.body.password){
+        res.status(400).send("No Password!");
+    }
+    let passwordHash = await genereateHash(req.body.password);
+
+    //first lets make sure that this username isnt taken
+    connection.query('SELECT * FROM users WHERE Username = ?',[username], function (error, results) {
+        if (error) throw error;
+        if(results.length > 0){
+            // username is taken!
+            res.status(403).send();
+        }else{
+            //usename is free, lets register!
+            connection.query('INSERT INTO users (Username, PasswordHash) VALUES (?,?)',[username,passwordHash], function (error, results) {
+                if (error) throw error;
+                res.status(200).send();
+            });
         }
     });
      

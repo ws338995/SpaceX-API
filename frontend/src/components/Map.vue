@@ -15,9 +15,6 @@ const svgpanzoom = ref(null);
 const selectedSite = ref(null);
 
 const currentZoomLevel = ref(10);
-
-const showDisclaimer = ref(true);
-
 const props = defineProps({
   launchSites: Array,
   landingSites: Array,
@@ -99,7 +96,7 @@ function focusOnPoint(long,lat){
 
 function generateRandomLocationInOcean(){
 
-    // have designed a block on the map where the ships might appear!
+    // have designated a block on the map where the ships might appear!
     let maxX = -50;
     let minX = -75;
     let maxY = 40;
@@ -140,13 +137,6 @@ function getShipLocation(ship){
             <Chip :outlined="!showTypes.launchPads" text="Launch Pads" color="#1e90ff" selectable @click="()=>{showTypes.launchPads = !showTypes.launchPads}"/>
             <Chip :outlined="!showTypes.landingPads" text="Landing Pads" color="red" selectable @click="()=>{showTypes.landingPads = !showTypes.landingPads}"/>
             <Chip :outlined="!showTypes.ships" text="Ships" color="rgb(156, 177, 24)" selectable @click="()=>{showTypes.ships = !showTypes.ships}"/>
-        </div>
-        <div class="disclaimer" v-if="showDisclaimer">
-            <p>There is no Geo Location data for some ships, so they will be placed somewhere random along around the US East Coast!
-                <span class="material-symbols-outlined closeBtn" @click="()=>{showDisclaimer = false;}">
-                    close
-                </span>
-            </p>
         </div>
         <SvgPanZoom
         @created="registerSvgPanZoom">
@@ -1454,11 +1444,11 @@ circle.selected{
     stroke-width: 0.5px;
 }
 path{
-    fill:rgba(12,12,12,0.9);
+    fill:rgba(65, 65, 65, 0.9);
     transition:0.1s;
 }
 path:hover{
-    fill:rgba(6,6,6,1);
+    fill:rgb(70, 70, 70);
 }
 
 .map-key{
@@ -1468,23 +1458,5 @@ path:hover{
     margin:10px;
     border-left:1px solid orange;
 }
-.disclaimer{
-    position:absolute;
-    bottom:80px;
-    left:0;right:0;
-    width: fit-content;
-    margin:auto;
-    border-bottom:1px solid orange;
-    padding:5px;
-    background-color:rgba(12, 12, 12, 0.4);
 
-}
-.disclaimer *{
-    display:inline-block;
-    vertical-align:top;
-}
-.disclaimer .closeBtn:hover{
-    cursor:pointer;
-    color:orange;
-}
 </style>

@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { userStore } from '../stores/user';
 import Toggle from '@vueform/toggle'
+import Button from './Button.vue';
 
 const usr = userStore();
 const emit = defineEmits(['close'])
@@ -45,6 +46,10 @@ const sizeMetric = ref(true);
       @change="usr.toggleUnitsSize"
       on-label="m"
       off-label="f"/>
+    </div>
+
+    <div class="logoutBtn" v-if="usr.getLoggedIn">
+      <Button text="Logout" @click="usr.logout"/>
     </div>
 
     <div class="closeBtn" @click="emit('close')">
@@ -99,6 +104,11 @@ const sizeMetric = ref(true);
 }
 .closeBtn:hover{
   color:orange;
+}
+
+.logoutBtn{
+  width:100px;
+  text-align: center;
 }
 
 /* div p{
